@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Bank | Donate Blood, Save Lives</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #fff5f5;
+      color: #333;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* Navbar */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      padding: 15px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+      transition: background 0.4s;
+    }
+
+    nav.scrolled {
+      background: rgba(179, 0, 0, 0.9);
+    }
+
+    nav h1 {
+      color: #b30000;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    nav.scrolled h1 {
+      color: white;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #b30000;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    nav.scrolled ul li a {
+      color: white;
+    }
+
+    nav ul li a:hover {
+      color: #ffcccc;
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 0 10%;
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at 30% 30%, #ffe6e6, #fff5f5 60%);
+    }
+
+    /* Glowing background animation */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: move 10s infinite alternate ease-in-out;
+      filter: blur(50px);
+      z-index: 1;
+    }
+
+    .circle:nth-child(1) {
+      width: 400px;
+      height: 400px;
+      background: #ff9999;
+      top: 10%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .circle:nth-child(2) {
+      width: 500px;
+      height: 500px;
+      background: #ffcccc;
+      top: 40%;
+      right: 15%;
+      animation-delay: 2s;
+    }
+
+    .circle:nth-child(3) {
+      width: 350px;
+      height: 350px;
+      background: #ff6666;
+      bottom: 10%;
+      left: 10%;
+      animation-delay: 4s;
+    }
+
+    @keyframes move {
+      from { transform: translateY(0px) translateX(0px); }
+      to { transform: translateY(-40px) translateX(40px); }
+    }
+
+    .hero-content {
+      z-index: 2;
+      animation: fadeIn 2s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero h2 {
+      font-size: 42px;
+      color: #b30000;
+      font-weight: 700;
+      margin-bottom: 20px;
+      line-height: 1.4;
+      animation: slideIn 2s ease forwards;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(30px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #444;
+      max-width: 650px;
+      margin: 0 auto 40px;
+      opacity: 0.9;
+    }
+
+    .hero button {
+      background: linear-gradient(45deg, #b30000, #ff4d4d);
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      padding: 14px 40px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 5px 20px rgba(179, 0, 0, 0.4);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
+      50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 0, 0, 0.6); }
+      100% { transform: scale(1); box-shadow: 0 0 20px rgba(255, 0, 0, 0.4); }
+    }
+
+    .hero button:hover {
+      background: linear-gradient(45deg, #ff1a1a, #b30000);
+      transform: translateY(-3px);
+    }
+
+    /* General Section */
+    section {
+      padding: 100px 10%;
+      text-align: center;
+      position: relative;
+    }
+
+    section h2 {
+      color: #b30000;
+      font-size: 34px;
+      margin-bottom: 30px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 30px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: 0.4s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(179,0,0,0.3);
+    }
+
+    .card h3 {
+      color: #b30000;
+      font-size: 22px;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #555;
+      font-size: 16px;
+    }
+
+    /* Team Section */
+    .team {
+      background: linear-gradient(180deg, #fff5f5, #ffe6e6);
+    }
+
+    .team-members {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .member {
+      background: white;
+      border-radius: 20px;
+      width: 230px;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .member:hover {
+      transform: translateY(-8px);
+    }
+
+    .member img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 3px solid #b30000;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .member h4 {
+      color: #b30000;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .member p {
+      color: #555;
+      font-size: 14px;
+    }
+
+    footer {
+      background-color: #b30000;
+      color: white;
+      text-align: center;
+      padding: 30px 10%;
+      font-size: 16px;
+    }
+
+    @media (max-width: 768px) {
+      .hero h2 { font-size: 30px; }
+      .hero p { font-size: 16px; }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav id="navbar">
+    <h1>Blood Connect</h1>
+    <ul>
+      <li><a href="#why">Why Donate</a></li>
+      <li><a href="#useful">How It Helps</a></li>
+      <li><a href="#team">Our Team</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+
+    <div class="hero-content">
+      <h2>"Be the reason someone smiles today — donate blood, save lives."</h2>
+      <p>Our platform connects donors and recipients instantly, empowering communities with compassion and care. Together, we build a bridge of life.</p>
+      <button onclick="window.location.href='login.html'">Let's Connect</button>
+    </div>
+  </section>
+
+  <!-- Why Donate -->
+  <section id="why">
+    <h2>Why Donate Blood?</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Save Lives</h3>
+        <p>Every blood donation can save up to three lives. Be someone’s miracle today.</p>
+      </div>
+      <div class="card">
+        <h3>Health Benefits</h3>
+        <p>Regular donors have better blood flow and lower heart disease risk.</p>
+      </div>
+      <div class="card">
+        <h3>Feel Empowered</h3>
+        <p>Experience the joy of giving and inspire others to do the same.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How This Platform Helps -->
+  <section id="useful">
+    <h2>How This Website Helps</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Smart Donor Finder</h3>
+        <p>Instantly find donors near you using our intelligent search system.</p>
+      </div>
+      <div class="card">
+        <h3>Real-Time Alerts</h3>
+        <p>Get notified when your blood type is needed urgently in your area.</p>
+      </div>
+      <div class="card">
+        <h3>Community Support</h3>
+        <p>Connect with donors, receivers, and hospitals through one trusted network.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Team -->
+  <section class="team" id="team">
+    <h2>Meet Our Team</h2>
+    <div class="team-members">
+      <div class="member">
+        <img src="https://cdn-icons-png.flaticon.com/512/706/706807.png" alt="Ishwarya">
+        <h4>Ishwarya Peramakonda</h4>
+        <p>Frontend Developer</p>
+      </div>
+      <div class="member">
+        <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" alt="Ravi">
+        <h4>Ravi Teja</h4>
+        <p>UI/UX Designer</p>
+      </div>
+      <div class="member">
+        <img src="https://cdn-icons-png.flaticon.com/512/194/194938.png" alt="Sneha">
+        <h4>Sneha Reddy</h4>
+        <p>Database Engineer</p>
+      </div>
+      
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Blood Bank | Together, we make every drop count ❤️</p>
+  </footer>
+
+  <script>
+    // Navbar background transition
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 50);
+    });
+  </script>
+</body>
+</html>
+
