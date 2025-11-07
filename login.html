@@ -135,7 +135,7 @@
       const storedDonor = JSON.parse(localStorage.getItem("donor"));
 
       if (!storedDonor) {
-        message.textContent = "❌ No donor data found. Please register first!";
+        message.textContent = "❌ No data found. Please register first!";
         message.className = "error";
         return;
       }
