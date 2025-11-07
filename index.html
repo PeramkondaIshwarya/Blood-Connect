@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blood Bank Home</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #fff5f5;
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    /* Navbar */
+    nav {
+      width: 100%;
+      background-color: #b30000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 40px;
+      position: fixed;
+      top: 0;
+      z-index: 10;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .profile img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid white;
+    }
+
+    .profile span {
+      color: white;
+      font-weight: 600;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      align-items: center;
+      gap: 25px;
+    }
+
+    nav ul li {
+      position: relative;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      font-size: 17px;
+      transition: 0.3s;
+      display: inline-block;
+      padding: 8px 10px;
+    }
+
+    nav ul li a:hover {
+      color: #ffe6e6;
+    }
+
+    /* Dropdown with Animation */
+    .dropdown {
+      position: absolute;
+      background: #b30000;
+      display: flex;
+      flex-direction: column;
+      min-width: 160px;
+      border-radius: 5px;
+      top: 45px;
+      left: 0;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-15px);
+      transition: all 0.3s ease;
+    }
+
+    .dropdown a {
+      padding: 10px;
+      color: white;
+      text-align: left;
+      border-bottom: 1px solid #ffcccc;
+    }
+
+    .dropdown a:last-child {
+      border-bottom: none;
+    }
+
+    /* Hover effect to keep dropdown open */
+    nav ul li:hover > .dropdown,
+    .dropdown:hover {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+
+    /* Slider */
+    .slider {
+      position: relative;
+      width: 100%;
+      height: 600px;
+      margin-top: 70px;
+      overflow: hidden;
+      background-color: white;
+    }
+
+    .slides img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    .slides img.active {
+      display: block;
+    }
+
+    .nav-buttons {
+      position: absolute;
+      top: 50%;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      transform: translateY(-50%);
+      padding: 0 20px;
+    }
+
+    .nav-buttons button {
+      background-color: rgba(0, 0, 0, 0.5);
+      border: none;
+      color: white;
+      font-size: 28px;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 50%;
+    }
+
+    .nav-buttons button:hover {
+      background-color: rgba(179, 0, 0, 0.8);
+    }
+
+    /* Blood Groups */
+    .blood-group-container {
+      text-align: center;
+      padding: 60px 10%;
+    }
+
+    .blood-group-container h2 {
+      color: #b30000;
+      font-size: 32px;
+      margin-bottom: 30px;
+      font-weight: 700;
+    }
+
+    .blood-groups {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .blood-group {
+      background-color: #b30000;
+      color: white;
+      padding: 20px 30px;
+      border-radius: 50px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 20px;
+      transition: 0.3s;
+    }
+
+    .blood-group:hover {
+      background-color: #e53935;
+      transform: scale(1.05);
+    }
+
+    #info-card {
+      max-width: 600px;
+      margin: 40px auto 0;
+      background: #fff3f3;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      display: none;
+      text-align: center;
+    }
+
+    #info-card h3 {
+      color: #b30000;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    section {
+      padding: 60px 10%;
+      text-align: center;
+    }
+
+    section h2 {
+      color: #b30000;
+      font-size: 32px;
+      margin-bottom: 25px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: #fff3f3;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    }
+
+    /* Contact Section */
+    .contact {
+      background: linear-gradient(180deg, #fff5f5 0%, #ffe6e6 100%);
+      padding: 80px 10%;
+      text-align: center;
+    }
+
+    .contact h2 {
+      color: #b30000;
+      font-size: 36px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .contact-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .contact-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: 0.4s;
+      cursor: pointer;
+    }
+
+    .contact-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 18px rgba(179, 0, 0, 0.25);
+      background: #fff3f3;
+    }
+
+    .contact-card .icon {
+      font-size: 35px;
+      color: #b30000;
+      margin-bottom: 12px;
+      animation: pulse 2s infinite;
+    }
+
+    .contact-card h3 {
+      color: #b30000;
+      margin-bottom: 8px;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .contact-card p {
+      color: #444;
+      font-size: 16px;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.2); opacity: 0.8; }
+    }
+
+    footer {
+      background-color: #b30000;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      font-size: 15px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="profile">
+      <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="Profile">
+      <span>Hello, Ishwarya</span>
+    </div>
+
+    <ul>
+      <li>
+        <a href="#">Register</a>
+        <div class="dropdown">
+          <a href="#">As Donor</a>
+          <a href="#">As Receiver</a>
+        </div>
+      </li>
+      <li><a href="#importance">Importance of Donation</a></li>
+      <li><a href="#who">Who Can Donate</a></li>
+      <li><a href="#contact">Contact Us</a></li>
+    </ul>
+  </nav>
+
+  <!-- Slider -->
+  <div class="slider">
+    <div class="slides">
+      <img src="/home/rgukt123/ishwarya-portfolio/images/blood.png" class="active" alt="Blood donation">
+      <img src="/home/rgukt123/Downloads/adhya hackathon/entrance.jpeg" alt="Donate blood">
+      <img src="/home/rgukt123/ishwarya-portfolio/images/blood.png" alt="Save lives">
+      <img src="/home/rgukt123/Downloads/adhya hackathon/entrance.jpeg" alt="Help others">
+    </div>
+    <div class="nav-buttons">
+      <button onclick="prevSlide()">&#10094;</button>
+      <button onclick="nextSlide()">&#10095;</button>
+    </div>
+  </div>
+
+  <!-- Blood Groups -->
+  <section class="blood-group-container">
+    <h2>Blood Groups</h2>
+    <div class="blood-groups">
+      <div class="blood-group" onclick="showInfo('A+')">A+</div>
+      <div class="blood-group" onclick="showInfo('A-')">A-</div>
+      <div class="blood-group" onclick="showInfo('B+')">B+</div>
+      <div class="blood-group" onclick="showInfo('B-')">B-</div>
+      <div class="blood-group" onclick="showInfo('AB+')">AB+</div>
+      <div class="blood-group" onclick="showInfo('AB-')">AB-</div>
+      <div class="blood-group" onclick="showInfo('O+')">O+</div>
+      <div class="blood-group" onclick="showInfo('O-')">O-</div>
+    </div>
+
+    <div id="info-card">
+      <h3 id="group-title"></h3>
+      <p><strong>You can give to:</strong> <span id="give"></span></p>
+      <p><strong>You can take from:</strong> <span id="take"></span></p>
+    </div>
+  </section>
+
+  <!-- Importance -->
+  <section id="importance">
+    <h2>Importance of Blood Donation</h2>
+    <div class="grid">
+      <div class="card"><h3>Saves Lives</h3><p>Every donation helps save up to three lives.</p></div>
+      <div class="card"><h3>Promotes Health</h3><p>Improves blood circulation and reduces disease risk.</p></div>
+      <div class="card"><h3>Community Impact</h3><p>Supports hospitals and emergency units.</p></div>
+    </div>
+  </section>
+
+  <!-- Who Can Donate -->
+  <section id="who">
+    <h2>Who Can Donate Blood?</h2>
+    <div class="grid">
+      <div class="card"><h3>Age</h3><p>18–65 years old</p></div>
+      <div class="card"><h3>Weight</h3><p>At least 50 kg</p></div>
+      <div class="card"><h3>Health</h3><p>Free from infections</p></div>
+      <div class="card"><h3>Time Gap</h3><p>3–4 months between donations</p></div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <p style="color:#555; font-size:17px; margin-bottom:40px;">
+      We’d love to hear from you — whether you’re a donor, receiver, or just want to know more.  
+      Reach out and be part of our life-saving community ❤️
+    </p>
+
+    <div class="contact-container">
+      <div class="contact-card">
+        <div class="icon">📍</div>
+        <h3>Visit Us</h3>
+        <p>Blood Bank Center, Hyderabad</p>
+      </div>
+
+      <div class="contact-card">
+        <div class="icon">📞</div>
+        <h3>Call Us</h3>
+        <p>+91 98765 43210</p>
+      </div>
+
+      <div class="contact-card">
+        <div class="icon">📧</div>
+        <h3>Email Us</h3>
+        <p>support@bloodbank.org</p>
+      </div>
+
+      <div class="contact-card">
+        <div class="icon">🕒</div>
+        <h3>Working Hours</h3>
+        <p>Mon–Sat: 9 AM – 6 PM</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Blood Bank | Donate Blood, Save Lives ❤️</p>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slides img');
+    let index = 0;
+
+    function showSlide(i) {
+      slides.forEach((img, idx) => img.classList.toggle('active', idx === i));
+    }
+
+    function nextSlide() {
+      index = (index + 1) % slides.length;
+      showSlide(index);
+    }
+
+    function prevSlide() {
+      index = (index - 1 + slides.length) % slides.length;
+      showSlide(index);
+    }
+
+    const bloodData = {
+      "A+": { give: "A+, AB+", take: "A+, A-, O+, O-" },
+      "A-": { give: "A+, A-, AB+, AB-", take: "A-, O-" },
+      "B+": { give: "B+, AB+", take: "B+, B-, O+, O-" },
+      "B-": { give: "B+, B-, AB+, AB-", take: "B-, O-" },
+      "AB+": { give: "AB+", take: "All Blood Groups" },
+      "AB-": { give: "AB+, AB-", take: "A-, B-, AB-, O-" },
+      "O+": { give: "O+, A+, B+, AB+", take: "O+, O-" },
+      "O-": { give: "All Blood Groups", take: "O-" }
+    };
+
+    function showInfo(group) {
+      document.getElementById('info-card').style.display = 'block';
+      document.getElementById('group-title').innerText = group + " Blood Group";
+      document.getElementById('give').innerText = bloodData[group].give;
+      document.getElementById('take').innerText = bloodData[group].take;
+    }
+  </script>
+
+</body>
+</html>
+
