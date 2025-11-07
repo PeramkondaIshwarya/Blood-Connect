@@ -180,7 +180,7 @@
         </div>
       </div>
 
-      <button type="submit" id="registerBtn" disabled>Register as Donor</button>
+      <button id="registerBtn" disabled>Register as Donor</button>
       <p>Want to register as a receiver? <a href="receiverRegistration.html">Click here</a></p>
     </form>
   </div>
@@ -222,16 +222,14 @@
         lastDonation: document.getElementById("lastDonation").value,
       };
 
-      // Store data in local storage
+      // Store donor data in localStorage
       localStorage.setItem("donor", JSON.stringify(donorData));
 
-      alert("✅ Donor registration successful! Thank you for your life-saving contribution ❤️");
+      alert("✅ Donor registration successful! Redirecting to your dashboard...");
 
-      // Reset form
-      e.target.reset();
-      registerBtn.disabled = true;
+      // Redirect to donor dashboard
+      window.location.href = "requester.html";
     });
   </script>
 </body>
 </html>
-

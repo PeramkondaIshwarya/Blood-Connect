@@ -158,7 +158,7 @@
       </div>
 
       <button type="submit" id="registerBtn" disabled>Register as Receiver</button>
-      <p>Want to register as a donor? <a href="donarRegistration.html">Click here</a></p>
+      <p>Want to register as a donor? <a href="donorRegistration.html">Click here</a></p>
     </form>
   </div>
 
@@ -172,6 +172,7 @@
 
     document.getElementById("receiverForm").addEventListener("submit", function (e) {
       e.preventDefault();
+
       const receiverData = {
         name: document.getElementById("receiverName").value,
         email: document.getElementById("receiverEmail").value,
@@ -182,12 +183,15 @@
         reason: document.getElementById("reason").value,
         requiredDate: document.getElementById("requiredDate").value,
       };
+
+      // Save receiver details
       localStorage.setItem("receiver", JSON.stringify(receiverData));
-      alert("✅ Receiver registration successful! We’ll connect you with a matching donor soon ❤️");
-      e.target.reset();
-      registerBtn.disabled = true;
+
+      alert("✅ Receiver registration successful! Redirecting to your dashboard...");
+
+      // Redirect to receiver dashboard
+      window.location.href = "receiver.html"; // Change if your filename differs
     });
   </script>
 </body>
 </html>
-
