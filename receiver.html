@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Receiver Dashboard - Blood Connect</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background: #f9f9f9;
+      overflow: hidden;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: linear-gradient(135deg, #7a0000, #b30000);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 30px 20px;
+    }
+
+    .sidebar h2 {
+      font-size: 26px;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .menu button {
+      background: none;
+      border: none;
+      color: #fff;
+      text-align: left;
+      font-size: 18px;
+      padding: 14px 20px;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: 0.3s;
+      width: 100%;
+    }
+
+    .menu button:hover,
+    .menu button.active {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Main content */
+    .main {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+    }
+
+    h1 {
+      font-size: 30px;
+      color: maroon;
+      margin-bottom: 20px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 15px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+      padding: 20px 25px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    }
+
+    .blood-group {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background-color: maroon;
+      color: #fff;
+      font-size: 16px;
+      font-weight: bold;
+      padding: 8px 12px;
+      border-radius: 8px;
+    }
+
+    .card h3 {
+      color: maroon;
+      margin-bottom: 8px;
+      font-size: 20px;
+    }
+
+    .card p {
+      font-size: 14px;
+      margin: 5px 0;
+      color: #333;
+    }
+
+    button.request {
+      width: 100%;
+      margin-top: 12px;
+      padding: 10px;
+      background-color: maroon;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button.request:hover {
+      background-color: #a30000;
+      transform: scale(1.03);
+    }
+
+    /* Hospital cards */
+    .hospital-card {
+      background: #fff;
+      border-left: 5px solid maroon;
+      border-radius: 12px;
+      padding: 15px 20px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .hospital-card h4 {
+      color: maroon;
+      margin-bottom: 5px;
+    }
+
+    .hospital-card p {
+      font-size: 15px;
+      color: #444;
+    }
+
+    /* Received history */
+    .history-card {
+      background: #fff;
+      border: 1px solid #eee;
+      border-radius: 12px;
+      padding: 18px 22px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .history-card h4 {
+      color: maroon;
+      margin-bottom: 5px;
+    }
+
+    .history-card p {
+      color: #333;
+      font-size: 15px;
+    }
+
+    .status {
+      font-weight: bold;
+      color: green;
+    }
+
+    footer {
+      margin-top: 30px;
+      color: #777;
+      text-align: center;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>🩸Receiver Panel</h2>
+    <div class="menu">
+      <button id="donorsBtn" class="active">Active Donors</button>
+      <button id="availabilityBtn">Blood Availability</button>
+      <button id="receivedBtn">Received History</button>
+    </div>
+  </div>
+
+  <!-- Main content -->
+  <div class="main">
+    <h1 id="pageTitle">Active Donors</h1>
+    <div id="contentArea"></div>
+    <footer>❤️ Every drop counts — Blood Connect</footer>
+  </div>
+
+  <script>
+    const contentArea = document.getElementById("contentArea");
+    const pageTitle = document.getElementById("pageTitle");
+
+    const donorsBtn = document.getElementById("donorsBtn");
+    const availabilityBtn = document.getElementById("availabilityBtn");
+    const receivedBtn = document.getElementById("receivedBtn");
+
+    // Sample Data
+    const donors = [
+      { name: "Sandeep Kumar", age: 25, bloodGroup: "A+", location: "Tirupati", contact: "9876543210", lastDonation: "Aug 2025" },
+      { name: "Pooja Reddy", age: 22, bloodGroup: "O+", location: "Kadapa", contact: "9988776655", lastDonation: "Sep 2025" },
+      { name: "Ravi Teja", age: 27, bloodGroup: "B+", location: "Nellore", contact: "9123456780", lastDonation: "Jul 2025" },
+      { name: "Meena Devi", age: 30, bloodGroup: "AB+", location: "Tirupati", contact: "9012345678", lastDonation: "Jun 2025" },
+      { name: "Amit Patel", age: 29, bloodGroup: "O-", location: "Anantapur", contact: "9898989898", lastDonation: "May 2025" }
+    ];
+
+    const availability = [
+      { hospital: "Apollo Hospitals, Tirupati", stock: [{ group: "A+", units: 8 }, { group: "O+", units: 6 }, { group: "B+", units: 4 }] },
+      { hospital: "SVIMS Hospital, Tirupati", stock: [{ group: "A-", units: 3 }, { group: "O-", units: 2 }, { group: "AB+", units: 5 }] },
+      { hospital: "GGH, Kadapa", stock: [{ group: "B+", units: 7 }, { group: "O+", units: 5 }, { group: "A+", units: 4 }] },
+      { hospital: "Narayanadri Hospital, Nellore", stock: [{ group: "AB-", units: 2 }, { group: "A+", units: 6 }] }
+    ];
+
+    const receivedHistory = [
+      { donor: "Sandeep Kumar", date: "10 Oct 2025", bloodGroup: "A+", hospital: "Apollo Hospitals, Tirupati", status: "Received" },
+      { donor: "Pooja Reddy", date: "22 Aug 2025", bloodGroup: "O+", hospital: "SVIMS Hospital, Tirupati", status: "Received" },
+      { donor: "Ravi Teja", date: "12 Jul 2025", bloodGroup: "B+", hospital: "GGH, Kadapa", status: "Received" }
+    ];
+
+    // Active donors view
+    function showDonors() {
+      pageTitle.textContent = "Active Donors";
+      contentArea.innerHTML = `<div class="container">
+        ${donors.map(d => `
+          <div class="card">
+            <div class="blood-group">${d.bloodGroup}</div>
+            <h3>${d.name}</h3>
+            <p><strong>Age:</strong> ${d.age}</p>
+            <p><strong>Location:</strong> ${d.location}</p>
+            <p><strong>Last Donation:</strong> ${d.lastDonation}</p>
+            <p><strong>Contact:</strong> ${d.contact}</p>
+            <button class="request" onclick="requestBlood('${d.name}', '${d.bloodGroup}')">Request Blood</button>
+          </div>
+        `).join("")}
+      </div>`;
+    }
+
+    // Blood availability view
+    function showAvailability() {
+      pageTitle.textContent = "Blood Availability in Hospitals";
+      contentArea.innerHTML = `
+        ${availability.map(h => `
+          <div class="hospital-card">
+            <h4>${h.hospital}</h4>
+            <ul>
+              ${h.stock.map(s => `<p><strong>${s.group}:</strong> ${s.units} units</p>`).join("")}
+            </ul>
+          </div>
+        `).join("")}
+      `;
+    }
+
+    // Received history view
+    function showReceived() {
+      pageTitle.textContent = "Received History";
+      contentArea.innerHTML = `
+        ${receivedHistory.map(h => `
+          <div class="history-card">
+            <h4>${h.donor}</h4>
+            <p><strong>Date:</strong> ${h.date}</p>
+            <p><strong>Blood Group:</strong> ${h.bloodGroup}</p>
+            <p><strong>Hospital:</strong> ${h.hospital}</p>
+            <p class="status">✅ ${h.status}</p>
+          </div>
+        `).join("")}
+      `;
+    }
+
+    // Alert on Request
+    function requestBlood(name, group) {
+      alert(`🩸 Blood request sent for ${group} from donor ${name}!`);
+    }
+    window.requestBlood = requestBlood;
+
+    // Button events
+    donorsBtn.onclick = () => {
+      activateButton(donorsBtn);
+      showDonors();
+    };
+    availabilityBtn.onclick = () => {
+      activateButton(availabilityBtn);
+      showAvailability();
+    };
+    receivedBtn.onclick = () => {
+      activateButton(receivedBtn);
+      showReceived();
+    };
+
+    // Utility for active button style
+    function activateButton(btn) {
+      [donorsBtn, availabilityBtn, receivedBtn].forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+    }
+
+    // Default view
+    showDonors();
+  </script>
+</body>
+</html>
