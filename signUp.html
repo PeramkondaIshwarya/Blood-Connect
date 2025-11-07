@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blood Connect - Sign Up</title>
+
+  <style>
+    /* ===== Base Styles ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #800000, #b30000);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #4a0000;
+    }
+
+    .container {
+      background: #fff;
+      width: 420px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      color: maroon;
+      margin-bottom: 25px;
+      font-size: 30px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: 1px solid maroon;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #a30000;
+      box-shadow: 0 0 6px rgba(128, 0, 0, 0.4);
+    }
+
+    button {
+      width: 100%;
+      background: maroon;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 17px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #a30000;
+      transform: scale(1.03);
+    }
+
+    p {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 15px;
+    }
+
+    a {
+      color: maroon;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .message {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .error {
+      color: red;
+    }
+
+    .success {
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Sign Up</h2>
+    <form id="signupForm">
+      <input type="text" id="username" placeholder="Username" required />
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="tel" id="mobile" placeholder="Mobile Number" required pattern="[0-9]{10}" />
+      <input type="text" id="address" placeholder="Address" required />
+      <input type="date" id="dob" required />
+      <input type="password" id="password" placeholder="Password" required minlength="6" />
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+      <button type="submit">Sign Up</button>
+      <p>Already have an account? <a href="login.html">Login</a></p>
+      <p id="message" class="message"></p>
+    </form>
+  </div>
+
+  <script>
+    const signupForm = document.getElementById("signupForm");
+    const message = document.getElementById("message");
+
+    signupForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const mobile = document.getElementById("mobile").value.trim();
+      const address = document.getElementById("address").value.trim();
+      const dob = document.getElementById("dob").value;
+      const password = document.getElementById("password").value;
+      const confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        message.textContent = "❌ Passwords do not match!";
+        message.className = "message error";
+        return;
+      }
+
+      // Create user object
+      const userData = {
+        username,
+        email,
+        mobile,
+        address,
+        dob,
+        password,
+      };
+
+      // Save user in localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      message.textContent = "✅ Sign-up successful! You can now login.";
+      message.className = "message success";
+
+      signupForm.reset();
+
+      // Redirect after 2 seconds (optional)
+      setTimeout(() => {
+        window.location.href = "login.html"; // You can change this
+      }, 2000);
+    });
+  </script>
+</body>
+</html>
+

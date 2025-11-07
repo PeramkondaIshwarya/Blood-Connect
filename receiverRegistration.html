@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Receiver Registration - Blood Connect</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #800000, #b30000);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 50px 0;
+      color: #4a0000;
+    }
+    .container {
+      background: #fff;
+      width: 500px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      text-align: center;
+      color: maroon;
+      margin-bottom: 25px;
+      font-size: 30px;
+    }
+    form input,
+    form select,
+    form textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: 1px solid maroon;
+      font-size: 15px;
+      outline: none;
+      resize: none;
+    }
+    form input:focus,
+    form select:focus,
+    form textarea:focus {
+      border-color: #a30000;
+      box-shadow: 0 0 6px rgba(128, 0, 0, 0.4);
+    }
+    button {
+      width: 100%;
+      background: maroon;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 17px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #a30000;
+      transform: scale(1.03);
+    }
+    button:disabled {
+      background: #c28a8a;
+      cursor: not-allowed;
+    }
+    .eligibility {
+      background: #fff0f0;
+      border: 1px solid maroon;
+      padding: 18px 20px;
+      border-radius: 12px;
+      margin-top: 18px;
+    }
+    .eligibility h4 {
+      color: maroon;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    ul {
+      margin-left: 20px;
+      list-style: disc;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+    .agree {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+    }
+    .agree input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: maroon;
+    }
+    p {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 15px;
+    }
+    a {
+      color: maroon;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Receiver Registration</h2>
+    <form id="receiverForm">
+      <input type="text" id="receiverName" placeholder="Full Name" required />
+      <input type="email" id="receiverEmail" placeholder="Email" required />
+      <input type="tel" id="receiverMobile" placeholder="Mobile Number" pattern="[0-9]{10}" required />
+      <input type="text" id="receiverAddress" placeholder="Address" required />
+      <input type="text" id="hospitalName" placeholder="Hospital Name" required />
+      <select id="receiverBloodGroup" required>
+        <option value="" disabled selected>Select Required Blood Group</option>
+        <option>A+</option><option>A-</option>
+        <option>B+</option><option>B-</option>
+        <option>AB+</option><option>AB-</option>
+        <option>O+</option><option>O-</option>
+      </select>
+      <textarea id="reason" rows="3" placeholder="Reason for Blood Requirement" required></textarea>
+      <input type="date" id="requiredDate" required />
+
+      <div class="eligibility">
+        <h4>Eligibility Requirements</h4>
+        <ul>
+          <li>Receiver must have a valid medical reason for requesting blood.</li>
+          <li>A hospital reference or patient ID should be available if needed.</li>
+          <li>Receiver’s contact and hospital details must be accurate and verifiable.</li>
+          <li>Receiver must not be involved in any illegal or commercial blood trade.</li>
+          <li>The request must be genuine and supported by valid medical documentation if necessary.</li>
+          <li>Blood will be used only for legitimate medical treatment purposes.</li>
+        </ul>
+        <div class="agree">
+          <input type="checkbox" id="agreeEligibility" />
+          <label for="agreeEligibility">I agree that I meet all the above eligibility requirements and provided information truthfully.</label>
+        </div>
+      </div>
+
+      <button type="submit" id="registerBtn" disabled>Register as Receiver</button>
+      <p>Want to register as a donor? <a href="donarRegistration.html">Click here</a></p>
+    </form>
+  </div>
+
+  <script>
+    const agreeBox = document.getElementById("agreeEligibility");
+    const registerBtn = document.getElementById("registerBtn");
+
+    agreeBox.addEventListener("change", () => {
+      registerBtn.disabled = !agreeBox.checked;
+    });
+
+    document.getElementById("receiverForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const receiverData = {
+        name: document.getElementById("receiverName").value,
+        email: document.getElementById("receiverEmail").value,
+        mobile: document.getElementById("receiverMobile").value,
+        address: document.getElementById("receiverAddress").value,
+        hospital: document.getElementById("hospitalName").value,
+        bloodGroup: document.getElementById("receiverBloodGroup").value,
+        reason: document.getElementById("reason").value,
+        requiredDate: document.getElementById("requiredDate").value,
+      };
+      localStorage.setItem("receiver", JSON.stringify(receiverData));
+      alert("✅ Receiver registration successful! We’ll connect you with a matching donor soon ❤️");
+      e.target.reset();
+      registerBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>
+

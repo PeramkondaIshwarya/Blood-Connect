@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donor Login - Blood Connect</title>
+  <style>
+    /* ===== Base Styles ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #800000, #b30000);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #4a0000;
+    }
+
+    .container {
+      background: #fff;
+      width: 400px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      color: maroon;
+      margin-bottom: 25px;
+      font-size: 30px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 10px;
+      border: 1px solid maroon;
+      font-size: 15px;
+      outline: none;
+    }
+
+    input:focus {
+      border-color: #a30000;
+      box-shadow: 0 0 6px rgba(128, 0, 0, 0.4);
+    }
+
+    button {
+      width: 100%;
+      background: maroon;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 17px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #a30000;
+      transform: scale(1.03);
+    }
+
+    .links {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 15px;
+    }
+
+    a {
+      color: maroon;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .error {
+      color: red;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+
+    .success {
+      color: green;
+      text-align: center;
+      margin-top: 10px;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" required />
+      <input type="tel" id="loginMobile" placeholder="Mobile Number" pattern="[0-9]{10}" required />
+      <button type="submit">Login</button>
+    </form>
+
+    <p class="links">
+      Don't have an account? <a href="signUp.html">Register here</a>
+    </p>
+
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("loginEmail").value.trim();
+      const mobile = document.getElementById("loginMobile").value.trim();
+      const storedDonor = JSON.parse(localStorage.getItem("donor"));
+
+      if (!storedDonor) {
+        message.textContent = "❌ No donor data found. Please register first!";
+        message.className = "error";
+        return;
+      }
+
+      if (email === storedDonor.email && mobile === storedDonor.mobile) {
+        message.textContent = "✅ Login successful! Welcome, " + storedDonor.name + " ❤️";
+        message.className = "success";
+        form.reset();
+
+        // Redirect after 2 seconds (optional)
+        setTimeout(() => {
+          window.location.href = "donorDashboard.html"; // You can change this
+        }, 2000);
+      } else {
+        message.textContent = "❌ Invalid email or mobile number!";
+        message.className = "error";
+      }
+    });
+  </script>
+</body>
+</html>
+

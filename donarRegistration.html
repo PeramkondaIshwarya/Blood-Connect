@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Donor Registration - Blood Connect</title>
+  <style>
+    /* ========== Base styling ========== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #800000, #b30000);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 50px 0;
+      color: #4a0000;
+    }
+
+    .container {
+      background: #fff;
+      width: 500px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 {
+      text-align: center;
+      color: maroon;
+      margin-bottom: 25px;
+      font-size: 30px;
+    }
+
+    form input,
+    form select {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 10px;
+      border: 1px solid maroon;
+      font-size: 15px;
+      outline: none;
+    }
+
+    form input:focus,
+    form select:focus {
+      border-color: #a30000;
+      box-shadow: 0 0 6px rgba(128, 0, 0, 0.4);
+    }
+
+    button {
+      width: 100%;
+      background: maroon;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-size: 17px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #a30000;
+      transform: scale(1.03);
+    }
+
+    button:disabled {
+      background: #c28a8a;
+      cursor: not-allowed;
+    }
+
+    .eligibility {
+      background: #fff0f0;
+      border: 1px solid maroon;
+      padding: 18px 20px;
+      border-radius: 12px;
+      margin-top: 18px;
+    }
+
+    .eligibility h4 {
+      color: maroon;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+
+    ul {
+      margin-left: 20px;
+      list-style: disc;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .agree {
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 15px;
+    }
+
+    .agree input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: maroon;
+    }
+
+    p {
+      text-align: center;
+      margin-top: 18px;
+      font-size: 15px;
+    }
+
+    a {
+      color: maroon;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Donor Registration</h2>
+    <form id="donorForm">
+      <input type="text" id="donorName" placeholder="Full Name" required />
+      <input type="email" id="donorEmail" placeholder="Email" required />
+      <input type="tel" id="donorMobile" placeholder="Mobile Number" pattern="[0-9]{10}" required />
+      <input type="text" id="donorAddress" placeholder="Address" required />
+      <input type="number" id="donorWeight" placeholder="Weight (in kg)" required min="45" max="150" />
+      <select id="donorBloodGroup" required>
+        <option value="" disabled selected>Select Blood Group</option>
+        <option>A+</option>
+        <option>A-</option>
+        <option>B+</option>
+        <option>B-</option>
+        <option>AB+</option>
+        <option>AB-</option>
+        <option>O+</option>
+        <option>O-</option>
+      </select>
+      <input type="number" id="donorAge" placeholder="Age" required min="18" max="65" />
+      <input type="date" id="lastDonation" placeholder="Last Donation Date" />
+
+      <!-- ✅ Eligibility Section -->
+      <div class="eligibility">
+        <h4>Eligibility Requirements</h4>
+        <ul>
+          <li>You must be at least 18 years old and weigh more than 45 kg.</li>
+          <li>You must be in good health and feeling well on the day of donation.</li>
+          <li>You must not have donated blood in the past 3 months (for men) or 4 months (for women).</li>
+          <li>You must not have consumed alcohol or drugs within the last 24 hours.</li>
+          <li>You must not be suffering from infectious diseases (HIV, Hepatitis, Malaria, etc.).</li>
+          <li>You must not have undergone major surgery or tattooing within the past 6 months.</li>
+          <li>You must not be pregnant or recently given birth (if female).</li>
+          <li>Your hemoglobin level should be within the normal range.</li>
+        </ul>
+
+        <div class="agree">
+          <input type="checkbox" id="agreeEligibility" />
+          <label for="agreeEligibility">I agree that I meet all the above eligibility requirements.</label>
+        </div>
+      </div>
+
+      <button type="submit" id="registerBtn" disabled>Register as Donor</button>
+      <p>Want to register as a receiver? <a href="receiverRegistration.html">Click here</a></p>
+    </form>
+  </div>
+
+  <script>
+    const agreeBox = document.getElementById("agreeEligibility");
+    const registerBtn = document.getElementById("registerBtn");
+
+    // Enable/Disable button based on agreement
+    agreeBox.addEventListener("change", () => {
+      registerBtn.disabled = !agreeBox.checked;
+    });
+
+    // Form Submission Logic
+    document.getElementById("donorForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const age = parseInt(document.getElementById("donorAge").value);
+      const weight = parseInt(document.getElementById("donorWeight").value);
+
+      if (age < 18) {
+        alert("You must be at least 18 years old to register as a donor!");
+        return;
+      }
+
+      if (weight < 45) {
+        alert("Your weight must be at least 45 kg to donate blood!");
+        return;
+      }
+
+      const donorData = {
+        name: document.getElementById("donorName").value,
+        email: document.getElementById("donorEmail").value,
+        mobile: document.getElementById("donorMobile").value,
+        address: document.getElementById("donorAddress").value,
+        weight: weight,
+        bloodGroup: document.getElementById("donorBloodGroup").value,
+        age: age,
+        lastDonation: document.getElementById("lastDonation").value,
+      };
+
+      // Store data in local storage
+      localStorage.setItem("donor", JSON.stringify(donorData));
+
+      alert("✅ Donor registration successful! Thank you for your life-saving contribution ❤️");
+
+      // Reset form
+      e.target.reset();
+      registerBtn.disabled = true;
+    });
+  </script>
+</body>
+</html>
+
